@@ -1,4 +1,5 @@
 import 'package:Krushi_Sarathi/config.dart';
+import './tabsscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -63,8 +64,7 @@ class _LoginState extends State<Login> {
                               fontWeight: FontWeight.bold,
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: primaryColor))),
+                              borderSide: BorderSide(color: primaryColor))),
                       //Mychange
                       onChanged: (val) {
                         name = val;
@@ -79,8 +79,7 @@ class _LoginState extends State<Login> {
                               fontWeight: FontWeight.bold,
                               color: Colors.grey),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: primaryColor))),
+                              borderSide: BorderSide(color: primaryColor))),
                       //Mychange
                       onChanged: (val) {
                         password = val;
@@ -123,7 +122,8 @@ class _LoginState extends State<Login> {
                             //           backgroundColor: Colors.red,
                             //           textColor: Colors.white,
                             //           fontSize: 16.0);
-                                  Navigator.of(context).pushNamed('/homepage');
+                            Navigator.of(context)
+                                .pushNamed(TabsScreen.routename);
                             //     }
                             //   },
                             // );
