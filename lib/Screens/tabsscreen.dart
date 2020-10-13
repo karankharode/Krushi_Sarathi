@@ -36,7 +36,7 @@ class _TabsScreenState extends State<TabsScreen> {
       bottomNavigationBar: CurvedNavigationBar(
           index: _selectedindex,
           color: primaryColor,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           height: 50,
           items: [
             Icon(

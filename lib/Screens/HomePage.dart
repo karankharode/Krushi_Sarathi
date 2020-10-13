@@ -1,5 +1,8 @@
 import 'package:Krushi_Sarathi/provider/products_provider.dart';
 import 'package:Krushi_Sarathi/widget/Productitem.dart';
+//import 'package:Krushi_Sarathi/widget/appbar.dart';
+import 'package:flappy_search_bar/flappy_search_bar.dart';
+import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:rubber/rubber.dart';
@@ -44,82 +47,99 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    /*SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.light,
         systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.light));
+        systemNavigationBarIconBrightness: Brightness.light));*/
     final mediaquery = MediaQuery.of(context);
+    final totalHeight =
+        mediaquery.size.height - mediaquery.padding.top - kToolbarHeight;
     List<Product> products =
         Provider.of<Products>(context, listen: false).items;
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title:
-              Text('Krushi Sarathi', style: TextStyle(color: Colors.black87)),
-          elevation: 0,
-          backgroundColor: Colors.white,
-          brightness: Brightness.light,
-          actionsIconTheme: IconThemeData(color: Colors.black),
-
-          iconTheme: IconThemeData(color: Colors.black87),
-
-          //drawer button
-
-          leading: isDrawerOpen
-              ? IconButton(
-                  icon: Icon(EvaIcons.arrowBack),
-                  onPressed: () {
-                    setState(() {
-                      xOffset = 0;
-                      yOffset = 0;
-                      zOffset = 0;
-                      scaleFactor = 1;
-                      isDrawerOpen = false;
-                    });
-                  },
-                )
-              : IconButton(
-                  onPressed: () {
-                    setState(() {
-                      xOffset = 210;
-                      yOffset = 40;
-                      scaleFactor = 0.9;
-                      isDrawerOpen = true;
-                    });
-                  },
-                  icon: Icon(EvaIcons.menu2Outline),
-                  iconSize: 30,
-                ),
-
-          actions: [
-            //Search Button
-
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/searchicon');
-              },
-              icon: Icon(EvaIcons.searchOutline),
-              iconSize: 30,
-              color: Colors.black87,
+        appBar: PreferredSize(
+            child: Container(
+              height: 180,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: drawerColor,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: mediaquery.padding.top,
+                  ),
+                  Container(
+                    height: 50,
+                    child: ListTile(
+                      leading: isDrawerOpen
+                          ? IconButton(
+                              icon: Icon(EvaIcons.arrowBack),
+                              color: Colors.black,
+                              onPressed: () {
+                                setState(() {
+                                  xOffset = 0;
+                                  yOffset = 0;
+                                  zOffset = 0;
+                                  scaleFactor = 1;
+                                  isDrawerOpen = false;
+                                });
+                              },
+                            )
+                          : IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  xOffset = 210;
+                                  yOffset = 40;
+                                  scaleFactor = 0.9;
+                                  isDrawerOpen = true;
+                                });
+                              },
+                              icon: Icon(EvaIcons.menu2Outline),
+                              iconSize: 30,
+                              color: Colors.black,
+                            ),
+                      title: Title(
+                          color: Colors.black,
+                          child: Text(
+                            'Krishi Sarthi',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          )),
+                      trailing: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/cartpage');
+                        },
+                        icon: Icon(EvaIcons.shoppingBagOutline),
+                        iconSize: 30,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                  Container(
+                      height: 100,
+                      margin: EdgeInsets.only(
+                          top: 0, bottom: 0, left: 20, right: 20),
+                      //padding: EdgeInsets.all(0),
+                      child: SearchBar(
+                        onSearch: null,
+                        onItemFound: null,
+                        hintText: 'Search',
+                        searchBarStyle: SearchBarStyle(
+                          backgroundColor: Colors.white,
+                          padding: EdgeInsets.only(
+                              top: 0, bottom: 0, left: 10, right: 10),
+                          /*borderRadius: BorderRadius.circular(50)*/
+                        ),
+                      ))
+                ],
+              ),
             ),
-
-            //Cart Button
-
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/cartpage');
-              },
-              icon: Icon(EvaIcons.shoppingBagOutline),
-              iconSize: 30,
-              color: Colors.black87,
-            )
-          ],
-        ),
-
-        //DrawerScreen and Container(Animated) Stack
-
+            preferredSize: Size.fromHeight(200)),
         body: Stack(
           children: [
             DrawerScreen(),
@@ -224,8 +244,7 @@ class _HomePageState extends State<HomePage> {
                       width: 180,
                       decoration: BoxDecoration(
                         border: Border(
-                            bottom: BorderSide(width: 8, color: Colors.amber)
-                            ),
+                            bottom: BorderSide(width: 8, color: Colors.amber)),
                       ),
                       child: Text(
                         'Featured Products',
@@ -235,7 +254,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Container(
                       width: double.infinity,
-                      height: 200,
+                      height: 280,
                       margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,

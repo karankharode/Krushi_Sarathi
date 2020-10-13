@@ -43,6 +43,7 @@ dependencies:
   flare_splash_screen: ^2.1.2
   flutter_svg: ^0.17.4
   provider: ^4.3.2
+  flappy_search_bar: ^1.4.1
   dio:
   fluttertoast:
 
