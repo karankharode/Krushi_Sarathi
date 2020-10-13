@@ -42,7 +42,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               children: [
                 InkWell(
                   child: Text(
-                    'Hello KK4',
+                    'Hello User',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -105,12 +105,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     SizedBox(height: 10),
                     // Text('Weedicides', style: TextStyle(fontSize: 15)),
                     // SizedBox(height: 10),
-                     Divider(thickness: 1, color: Colors.white),
+                    Divider(thickness: 1, color: Colors.white),
                     Text('Sell Cotton', style: TextStyle(fontSize: 15)),
                     SizedBox(height: 10),
                     Text('Sell Crops', style: TextStyle(fontSize: 15)),
                     SizedBox(height: 10),
-                     Divider(thickness: 1, color: Color(0xFFff6f00)),
+                    Divider(thickness: 1, color: Color(0xFFff6f00)),
                   ],
                 ),
               ),
@@ -156,7 +156,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                             color: Color(0xFFff6f00),
                             fontWeight: FontWeight.bold),
                       ),
-                      onTap: (){
+                      onTap: () {
                         Navigator.of(context).pushNamed('/faq');
                       },
                     ),
