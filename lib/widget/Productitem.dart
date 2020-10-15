@@ -1,7 +1,7 @@
 import 'package:Krushi_Sarathi/ProductPage.dart';
 import 'package:flutter/material.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductItem extends StatefulWidget {
   final String id;
   final String title;
   final String image;
@@ -11,14 +11,19 @@ class ProductItem extends StatelessWidget {
   ProductItem(this.id, this.title, this.price, this.description, this.image);
 
   @override
+  _ProductItemState createState() => _ProductItemState();
+}
+
+class _ProductItemState extends State<ProductItem> {
+  bool _isFav = false;
+  @override
   Widget build(BuildContext context) {
     final mediaquery = MediaQuery.of(context);
-    final totalHeight =
-        mediaquery.size.height - mediaquery.padding.top - kToolbarHeight;
-    final totalWidth = mediaquery.size.width;
+
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, ProductPage.routename, arguments: id);
+        Navigator.pushNamed(context, ProductPage.routename,
+            arguments: widget.id);
       },
       //splashColor: ,
       child: Container(
@@ -32,15 +37,33 @@ class ProductItem extends StatelessWidget {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            Container(
-              height: 100,
-              width: double.infinity,
-              margin: EdgeInsets.all(10),
-              child: Image.asset(
-                image,
-                fit: BoxFit.cover,
+            Stack(children: [
+              Container(
+                height: 100,
+                width: double.infinity,
+                margin: EdgeInsets.all(10),
+                child: Image.asset(
+                  widget.image,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
+              Positioned(
+                child: IconButton(
+                    icon: (_isFav)
+                        ? Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                        : Icon(Icons.favorite_border),
+                    onPressed: () {
+                      setState(() {
+                        _isFav = !_isFav;
+                      });
+                    }),
+                bottom: 0,
+                right: 0,
+              )
+            ]),
             Divider(
               color: Colors.black54,
               thickness: 1.5,
@@ -50,7 +73,7 @@ class ProductItem extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '₹${price}',
+                '₹${widget.price}',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 textAlign: TextAlign.left,
               ),
@@ -58,7 +81,7 @@ class ProductItem extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                title,
+                widget.title,
                 style: TextStyle(fontSize: 15),
               ),
             ),
@@ -68,10 +91,16 @@ class ProductItem extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FlatButton.icon(
-                icon: Icon(Icons.shopping_cart),
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
                 onPressed: () {},
-                label: Text('Add'),
-                color: Colors.amber,
+                label: Text(
+                  'Add',
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.orange,
               ),
             )
           ],

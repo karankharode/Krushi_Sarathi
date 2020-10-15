@@ -20,6 +20,7 @@ class _ProductPageState extends State<ProductPage> {
   var dropdownValue = 1;
   bool _init = true;
   var product;
+  bool _isFav = false;
   @override
   void didChangeDependencies() {
     if (_init) {
@@ -73,13 +74,38 @@ class _ProductPageState extends State<ProductPage> {
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(80),
                       bottomRight: Radius.circular(80))),
-              child: Container(
-                margin:
-                    EdgeInsets.only(bottom: 30, right: 30, left: 30, top: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(80),
-                    image: DecorationImage(
-                        image: AssetImage(product.image), fit: BoxFit.cover)),
+              child: Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                        bottom: 30, right: 30, left: 30, top: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(80),
+                        image: DecorationImage(
+                            image: AssetImage(product.image),
+                            fit: BoxFit.cover)),
+                  ),
+                  Positioned(
+                    child: IconButton(
+                        icon: (_isFav)
+                            ? Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                                size: 35,
+                              )
+                            : Icon(
+                                Icons.favorite_border,
+                                size: 35,
+                              ),
+                        onPressed: () {
+                          setState(() {
+                            _isFav = !_isFav;
+                          });
+                        }),
+                    bottom: 50,
+                    right: 50,
+                  )
+                ],
               ),
             ),
             Container(
