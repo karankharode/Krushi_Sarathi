@@ -33,6 +33,7 @@ dependencies:
   curved_navigation_bar: ^0.3.3
   flutter_swiper: ^1.1.2
   flutter_staggered_grid_view: ^0.3.0
+  carousel_slider: ^2.3.1
   rubber: ^0.3.2
   pin_code_text_field: ^1.6.0
   country_code_picker: ^1.1.5
@@ -75,17 +76,19 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: ReemKufi
+      fonts:
+        - asset: Assets/ReemKufi-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
+    - family: Quattrocento
+      fonts:
+        - asset: Assets/Quattrocento-Regular.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+    - family: Roboto-Light
+      fonts:
+        - asset: Assets/Roboto-Light.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

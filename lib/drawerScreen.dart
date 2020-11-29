@@ -1,182 +1,282 @@
 import 'config.dart';
 import 'package:flutter/material.dart';
+import 'package:Krushi_Sarathi/values/drawerConfig.dart';
 
-class DrawerScreen extends StatefulWidget {
-  @override
-  _DrawerScreenState createState() => _DrawerScreenState();
-}
+  Widget DrawerScreen(BuildContext context) {
 
-class _DrawerScreenState extends State<DrawerScreen> {
-  @override
-  Widget build(BuildContext context) {
+    double drawerWidth=MediaQuery.of(context).size.width/1.5;
+
+
     return Container(
+      width: drawerWidth,
       decoration: BoxDecoration(
         color: drawerColor,
       ),
-      padding: EdgeInsets.only(top: 30, bottom: 40, left: 0),
+      padding: EdgeInsets.only( left: 0,top: 30),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40, 5, 0, 10),
-                child: InkWell(
+
+          // profile tile
+          Container(
+            color: drawerProfileColor,
+            height: drawerWidth/3.5,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: 10,),
+                InkWell(
                   onTap: () {
                     Navigator.of(context).pushNamed('/profile');
                   },
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
                     backgroundImage: AssetImage('Assets/profile_user.png'),
-                    radius: 50,
+                    radius: avatarIconSize,
                   ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                InkWell(
-                  child: Text(
-                    'Hello KK4',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/profile');
-                  },
+                SizedBox(width: 20,),
+                Text(
+                  'Hello KK4',
+                  style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily:textFontFamily,
+                      fontSize: 20),
                 ),
               ],
             ),
           ),
           SizedBox(height: 20),
-          Divider(thickness: 1, color: Colors.white),
-          SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+
+          //home
+          InkWell(
+            onTap: (){
+              Navigator.of(context).pop();
+            },
             child: Row(
               children: [
+                SizedBox(width: 20,),
+                Icon(Icons.home_filled,color: iconColor,size: iconSize,),
+                SizedBox(width: 10,),
                 Text(
-                  'Your Orders',
+                  'Home',
                   style: TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                    color: textColor,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: textFontFamily,
+                    fontSize: drawertextSize,
                   ),
                 ),
               ],
             ),
           ),
+
           SizedBox(height: 15.0),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+
+          //Categories
+          InkWell(
+            onTap: (){
+              Navigator.of(context).pushNamed('/categoryItems');
+            },
             child: Row(
               children: [
+                SizedBox(width: 20,),
+                Icon(Icons.apps_rounded,color: iconColor,size: iconSize,),
+                SizedBox(width: 10,),
                 Text(
-                  "Today's offers",
+                  'Categories',
                   style: TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15),
+                    color: textColor,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: textFontFamily,
+                    fontSize: drawertextSize,
+                  ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 10),
-          Divider(thickness: 1, color: Colors.white),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 10, 0, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Seeds', style: TextStyle(fontSize: 15)),
-                    SizedBox(height: 10),
-                    Text('Fertilizers', style: TextStyle(fontSize: 15)),
-                    SizedBox(height: 10),
-                    Text('Pesticides', style: TextStyle(fontSize: 15)),
-                    SizedBox(height: 10),
-                    // Text('Weedicides', style: TextStyle(fontSize: 15)),
-                    // SizedBox(height: 10),
-                     Divider(thickness: 1, color: Colors.white),
-                    Text('Sell Cotton', style: TextStyle(fontSize: 15)),
-                    SizedBox(height: 10),
-                    Text('Sell Crops', style: TextStyle(fontSize: 15)),
-                    SizedBox(height: 10),
-                     Divider(thickness: 1, color: Color(0xFFff6f00)),
-                  ],
+
+          SizedBox(height: 15.0),
+
+          // Featured Products
+          InkWell(
+            onTap: (){
+            },
+            child: Row(
+              children: [
+                SizedBox(width: 20,),
+                Icon(Icons.business_center_rounded,color: iconColor,size: iconSize,),
+                SizedBox(width: 10,),
+                Text(
+                  'Featured Products',
+                  style: TextStyle(
+                    color: textColor,
+                    fontFamily: textFontFamily,
+                    fontWeight: FontWeight.w300,
+                    fontSize:drawertextSize,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Divider(thickness: 1, color: Color(0xFFff6f00)),
-          SizedBox(height: 15),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      child: Text(
-                        'WishList',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFFff6f00),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    InkWell(
-                      child: Text(
-                        'Notifications',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFFff6f00),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pushNamed('/notifications_page');
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    InkWell(
-                      child: Text(
-                        'FAQ',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFFff6f00),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      onTap: (){
-                        Navigator.of(context).pushNamed('/faq');
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    InkWell(
-                      child: Text(
-                        'Settings',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFFff6f00),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+
+          SizedBox(height: 10.0),
+
+          //Divider
+          Divider(thickness: 1, color: dividerColor,height: 10,),
+
+          SizedBox(height: 10.0),
+
+          //Account
+          InkWell(
+            onTap: (){
+            },
+            child: Row(
+              children: [
+                SizedBox(width: 20,),
+                Icon(Icons.accessibility_new_rounded,color: iconColor,size: iconSize,),
+                SizedBox(width: 10,),
+                Text(
+                  'Account',
+                  style: TextStyle(
+                    color: textColor,
+                    fontFamily: textFontFamily,
+                    fontWeight: FontWeight.w300,
+                    fontSize:drawertextSize,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+          ),
+
+          SizedBox(height: 15.0),
+
+          //WishList
+          InkWell(
+            onTap: (){
+            },
+            child: Row(
+              children: [
+                SizedBox(width: 20,),
+                Icon(Icons.toll_rounded,color: iconColor,size: iconSize,),
+                SizedBox(width: 10,),
+                Text(
+                  'WishList',
+                  style: TextStyle(
+                    color: textColor,
+                    fontFamily: textFontFamily,
+                    fontWeight: FontWeight.w300,
+                    fontSize:drawertextSize,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 15.0),
+
+          //Orders
+          InkWell(
+            onTap: (){
+            },
+            child: Row(
+              children: [
+                SizedBox(width: 20,),
+                Icon(Icons.work,color: iconColor,size: iconSize,),
+                SizedBox(width: 10,),
+                Text(
+                  'Orders',
+                  style: TextStyle(
+                    fontFamily: textFontFamily,
+                    color: textColor,
+                    fontWeight: FontWeight.w300,
+                    fontSize:drawertextSize,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 15.0),
+
+          //Sign Out
+          InkWell(
+            onTap: (){
+            },
+            child: Row(
+              children: [
+                SizedBox(width: 20,),
+                Icon(Icons.logout,color: iconColor,size: iconSize,),
+                SizedBox(width: 10,),
+                Text(
+                  'SignOut',
+                  style: TextStyle(
+                    color: textColor,
+                    fontFamily: textFontFamily,
+                    fontWeight: FontWeight.w300,
+                    fontSize:drawertextSize,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 10.0),
+
+          //Divider
+          Divider(thickness: 1, color:dividerColor,height: 10,),
+
+          SizedBox(height: 10.0),
+
+          //Settings
+          InkWell(
+            onTap: (){
+            },
+            child: Row(
+              children: [
+                SizedBox(width: 20,),
+                Icon(Icons.settings,color:iconColor,size: iconSize,),
+                SizedBox(width: 10,),
+                Text(
+                  'Settings',
+                  style: TextStyle(
+                    fontFamily: textFontFamily,
+                    color: textColor,
+                    fontWeight: FontWeight.w300,
+                    fontSize:drawertextSize,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 15.0),
+
+          //Help
+          InkWell(
+            onTap: (){
+            },
+            child: Row(
+              children: [
+                SizedBox(width: 20,),
+                Icon(Icons.announcement_outlined,color: iconColor,size: iconSize,),
+                SizedBox(width: 10,),
+                Text(
+                  'Help',
+                  style: TextStyle(
+                    color: textColor,
+                    fontFamily:textFontFamily,
+                    fontWeight: FontWeight.w300,
+                    fontSize:drawertextSize,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
-}
+

@@ -4,6 +4,11 @@ Color primaryColor = Color.fromRGBO(7, 94, 85, 1);
 Color secondaryColor = Colors.white;
 Color shadowColor = Colors.lightGreen;
 Color textColor = Colors.white;
-Color drawerColor = Color.fromRGBO(0, 136, 122, 1);
 Color thirdColor = Colors.lightGreen;
-
+String backgroundImage="Assets/ff.jpg";
+double avatarIconSize=25;
+double iconSize=35;
+Color iconColor=Colors.white;
+Color dividerColor=Colors.black54;
+String homepageAppbarTitle="Mallanna";
+double homepageAppbarTitleSize=25;

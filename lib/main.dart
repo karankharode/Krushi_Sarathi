@@ -1,5 +1,7 @@
 import 'package:Krushi_Sarathi/HomePage.dart';
+import 'package:Krushi_Sarathi/category/CategoryItems.dart';
 import 'package:Krushi_Sarathi/login.dart';
+import 'package:Krushi_Sarathi/pesticides.dart';
 import 'package:Krushi_Sarathi/signup.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +21,8 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/signup': (BuildContext context) => SignupPage(),
         '/homepage': (BuildContext context) => HomePage(),
+        '/Pesticides': (BuildContext context) => Pesticides(),
+        '/categoryItems': (BuildContext context) => CategoryItems(),
       },
     );
   }

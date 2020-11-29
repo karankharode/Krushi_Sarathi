@@ -75,7 +75,6 @@ class ProductPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-
                     Expanded(
                       child: OutlineButton.icon(
                         icon: Icon(EvaIcons.shoppingBagOutline),
