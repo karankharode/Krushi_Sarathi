@@ -1,4 +1,7 @@
-import 'package:Krushi_Sarathi/products.dart';
+import 'package:Krushi_Sarathi/provider/Cartitem.dart';
+import 'package:Krushi_Sarathi/Screens/CartPage.dart';
+import 'package:Krushi_Sarathi/config.dart';
+import 'package:Krushi_Sarathi/provider/products.dart';
 import 'package:Krushi_Sarathi/provider/products_provider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +22,16 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   var dropdownValue = 1;
   bool _init = true;
+  var products;
   var product;
-  bool _isFav = false;
   @override
   void didChangeDependencies() {
     if (_init) {
       final id = ModalRoute.of(context).settings.arguments as String;
-      //final item = Provider.of<Products>(context, listen: false).items;
       product =
           Provider.of<Products>(context, listen: false).findElementById(id);
+      print(product);
+      // product = products.;
     }
     _init = false;
     super.didChangeDependencies();
@@ -35,12 +39,11 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final mediaquery = MediaQuery.of(context);
-
+    final cart = Provider.of<Cartitem>(context, listen: false);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.amber,
-          shadowColor: Colors.amber,
+          backgroundColor: drawerColor,
+          shadowColor: drawerColor,
           elevation: 0,
           leading: IconButton(
             icon: Icon(
@@ -58,7 +61,9 @@ class _ProductPageState extends State<ProductPage> {
                   size: 30,
                   color: Colors.white,
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.pushNamed(context, CartPage.routename);
+                }),
             IconButton(
                 icon: Icon(Icons.share, size: 30, color: Colors.white),
                 onPressed: () {})
@@ -70,7 +75,7 @@ class _ProductPageState extends State<ProductPage> {
               height: 350,
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: drawerColor,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(80),
                       bottomRight: Radius.circular(80))),
@@ -78,16 +83,16 @@ class _ProductPageState extends State<ProductPage> {
                 children: [
                   Container(
                     margin: EdgeInsets.only(
-                        bottom: 30, right: 30, left: 30, top: 10),
+                        bottom: 50, right: 40, left: 40, top: 10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(80),
                         image: DecorationImage(
                             image: AssetImage(product.image),
-                            fit: BoxFit.cover)),
+                            fit: BoxFit.fill)),
                   ),
                   Positioned(
                     child: IconButton(
-                        icon: (_isFav)
+                        icon: (product.isFavorite)
                             ? Icon(
                                 Icons.favorite,
                                 color: Colors.red,
@@ -99,11 +104,11 @@ class _ProductPageState extends State<ProductPage> {
                               ),
                         onPressed: () {
                           setState(() {
-                            _isFav = !_isFav;
+                            product.toogleFavorite(product);
                           });
                         }),
-                    bottom: 50,
-                    right: 50,
+                    bottom: 70,
+                    right: 70,
                   )
                 ],
               ),
@@ -150,17 +155,17 @@ class _ProductPageState extends State<ProductPage> {
                             child: RaisedButton.icon(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18.0),
-                                  side: BorderSide(color: Colors.orange)),
+                                  side: BorderSide(color: primaryColor)),
                               icon: Icon(
                                 Icons.account_balance_wallet,
-                                color: Colors.orange,
+                                color: primaryColor,
                                 size: 25,
                               ),
-                              onPressed: () {},
+                              onPressed: (product.avaliable) ? () {} : null,
                               label: Text(
                                 'Buy Now',
                                 style: TextStyle(
-                                    color: Colors.orange,
+                                    color: primaryColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15),
                               ),
@@ -179,7 +184,17 @@ class _ProductPageState extends State<ProductPage> {
                                 color: Colors.white,
                                 size: 25,
                               ),
-                              onPressed: () {},
+                              onPressed: (product.avaliable)
+                                  ? () {
+                                      cart.addItem(
+                                          id: product.id,
+                                          avail: product.avaliable,
+                                          image: product.image,
+                                          price: 100,
+                                          productname: product.productName,
+                                          quantity: 2);
+                                    }
+                                  : null,
                               label: Text(
                                 'Add to Cart',
                                 style: TextStyle(
@@ -187,7 +202,7 @@ class _ProductPageState extends State<ProductPage> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15),
                               ),
-                              color: Colors.orange,
+                              color: primaryColor,
                             ),
                           )
                         ],
@@ -201,7 +216,14 @@ class _ProductPageState extends State<ProductPage> {
                             fontSize: 20, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left,
                       ),
-                      Text(product.description)
+                      Text(product.description),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Divider(
+                        thickness: 1,
+                        color: Colors.black,
+                      )
                     ]))
           ]),
         )
@@ -234,10 +256,10 @@ class _ProductPageState extends State<ProductPage> {
       icon: Icon(Icons.keyboard_arrow_down),
       iconSize: 24,
       elevation: 16,
-      style: TextStyle(color: Colors.orange),
+      style: TextStyle(color: primaryColor),
       underline: Container(
         height: 2,
-        color: Colors.orange,
+        color: primaryColor,
       ),
       onChanged: (newValue) {
         setState(() {

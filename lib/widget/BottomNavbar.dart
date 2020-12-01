@@ -1,10 +1,11 @@
 import 'package:Krushi_Sarathi/Screens/CartPage.dart';
 import 'package:Krushi_Sarathi/Screens/ContactusPage.dart';
+import 'package:Krushi_Sarathi/Screens/HomePage.dart';
 import 'package:Krushi_Sarathi/Screens/UserProfilePage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
-import 'config.dart';
+import '../config.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int value;
@@ -14,7 +15,7 @@ class BottomNavBar extends StatelessWidget {
     return CurvedNavigationBar(
       index: value,
       color: primaryColor,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       height: 50,
       items: [
         Icon(
@@ -28,7 +29,7 @@ class BottomNavBar extends StatelessWidget {
       ],
       onTap: (index) {
         if (index == 0) {
-          Navigator.of(context).pushNamed('/homepage');
+          Navigator.of(context).pushNamed(HomePage.routename);
         }
         if (index == 1) {
           Navigator.of(context).pushNamed(ContactUsPage.routename);

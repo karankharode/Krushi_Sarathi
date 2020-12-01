@@ -1,5 +1,6 @@
 import 'package:Krushi_Sarathi/provider/products_provider.dart';
 import 'package:Krushi_Sarathi/widget/Productitem.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 //import 'package:Krushi_Sarathi/widget/appbar.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/search_bar_style.dart';
@@ -8,14 +9,14 @@ import 'package:provider/provider.dart';
 import 'package:rubber/rubber.dart';
 
 import '../config.dart';
-import 'package:Krushi_Sarathi/products.dart';
+import 'package:Krushi_Sarathi/provider/products.dart';
 import './drawerScreen.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import '../ProductPage.dart';
+import 'ProductPage.dart';
 
 //Class HomePage
 
@@ -26,6 +27,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _current = 0;
   List bannerAdSlider = [
     "Assets/banner1.png",
     "Assets/banner2.jpg",
@@ -33,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     "Assets/banner4.jpg",
     "Assets/banner5.jpg",
     "Assets/banner6.jpg",
-    "Assets/banner7.jpg",
+    //"Assets/banner7.jpg",
     "Assets/banner8.jpg",
   ];
   //Drawer Animation Variables
@@ -47,257 +49,155 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    /*SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.light));*/
     final mediaquery = MediaQuery.of(context);
     final totalHeight =
         mediaquery.size.height - mediaquery.padding.top - kToolbarHeight;
     List<Product> products =
         Provider.of<Products>(context, listen: false).items;
-    return Scaffold(
-        appBar: PreferredSize(
-            child: Container(
-              height: 180,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: drawerColor,
+    Widget buildCategory(String image, String text) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: GridTile(
+          child: Image.asset(
+            'Assets/${image}',
+            fit: BoxFit.cover,
+          ),
+          footer: GridTileBar(
+            title: Text(
+              text,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: mediaquery.padding.top,
-                  ),
-                  Container(
-                    height: 50,
-                    child: ListTile(
-                      leading: isDrawerOpen
-                          ? IconButton(
-                              icon: Icon(EvaIcons.arrowBack),
-                              color: Colors.black,
-                              onPressed: () {
-                                setState(() {
-                                  xOffset = 0;
-                                  yOffset = 0;
-                                  zOffset = 0;
-                                  scaleFactor = 1;
-                                  isDrawerOpen = false;
-                                });
-                              },
-                            )
-                          : IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  xOffset = 210;
-                                  yOffset = 40;
-                                  scaleFactor = 0.9;
-                                  isDrawerOpen = true;
-                                });
-                              },
-                              icon: Icon(EvaIcons.menu2Outline),
-                              iconSize: 30,
-                              color: Colors.black,
-                            ),
-                      title: Title(
-                          color: Colors.black,
-                          child: Text(
-                            'Krishi Sarthi',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          )),
-                      trailing: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/cartpage');
-                        },
-                        icon: Icon(EvaIcons.shoppingBagOutline),
-                        iconSize: 30,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                  Container(
-                      height: 100,
-                      margin: EdgeInsets.only(
-                          top: 0, bottom: 0, left: 20, right: 20),
-                      //padding: EdgeInsets.all(0),
-                      child: SearchBar(
-                        onSearch: null,
-                        onItemFound: null,
-                        hintText: 'Search',
-                        searchBarStyle: SearchBarStyle(
-                          backgroundColor: Colors.white,
-                          padding: EdgeInsets.only(
-                              top: 0, bottom: 0, left: 10, right: 10),
-                          /*borderRadius: BorderRadius.circular(50)*/
-                        ),
-                      ))
-                ],
-              ),
+              textAlign: TextAlign.center,
             ),
-            preferredSize: Size.fromHeight(200)),
-        body: Stack(
+            backgroundColor: Colors.white54,
+          ),
+        ),
+      );
+    }
+
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DrawerScreen(),
-            AnimatedContainer(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              duration: Duration(milliseconds: 250),
-              transform: Matrix4.translationValues(xOffset, yOffset, 0)
-                ..scale(scaleFactor)
-                ..rotateY(isDrawerOpen ? -0.5 : 0),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(isDrawerOpen ? 40 : 0.0),
-                  boxShadow: [
-                    BoxShadow(
-                      //Body Container Shadow
+            SizedBox(height: 10),
 
-                      color: drawerColor,
-                      spreadRadius: 10,
-                      blurRadius: 70,
-                    )
-                  ]),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 10),
-
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: SizedBox(
-                          height: 200.0,
-                          width: double.infinity,
-                          child: Carousel(
-                            images: [
-                              AssetImage("Assets/banner1.png"),
-                              AssetImage("Assets/banner2.jpg"),
-                              AssetImage("Assets/banner3.jpg"),
-                              AssetImage("Assets/banner4.jpg"),
-                              AssetImage("Assets/banner5.jpg"),
-                              AssetImage("Assets/banner6.jpg"),
-                            ],
-                            dotSize: 7.0,
-                            dotSpacing: 20.0,
-                            dotColor: primaryColor,
-                            //dotBgColor: Color(0xFFffc107).withOpacity(0.5),
-                            indicatorBgPadding: 5.0,
-                            borderRadius: true,
-                            radius: Radius.circular(20.0),
-                            dotIncreaseSize: 1.5,
-                          )),
-                    ),
-
-                    //bannerAdSlider2 (Carousel)/end
-
-                    //ad banner 1 (Static)
-                    SizedBox(
-                      height: 10,
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(right: 30, left: 30),
-                      child: AspectRatio(
-                        aspectRatio: 16 / 5,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage("Assets/banner7.jpg"),
-                                fit: BoxFit.cover),
+            Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: SizedBox(
+                  height: 180.0,
+                  width: double.infinity,
+                  child: CarouselSlider.builder(
+                    height: 180.0,
+                    initialPage: _current,
+                    viewportFraction: 0.8,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    reverse: false,
+                    enableInfiniteScroll: true,
+                    autoPlayInterval: Duration(seconds: 5),
+                    autoPlayAnimationDuration: Duration(seconds: 1),
+                    pauseAutoPlayOnTouch: Duration(seconds: 10),
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _current = index;
+                      });
+                    },
+                    itemCount: bannerAdSlider.length,
+                    itemBuilder: (context, int index) {
+                      return Transform.scale(
+                        scale: (index == _current) ? 1 : 0.9,
+                        child: ClipRRect(
+                          //height: 600,
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            bannerAdSlider[index],
+                            width: double.infinity,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
+                  ),
+                )),
 
-                    //ad banner3 (Static)/end
+            //bannerAdSlider2 (Carousel)/end
 
-                    SizedBox(height: 20),
+            //ad banner 1 (Static)
+            SizedBox(
+              height: 10,
+            ),
 
-                    //ProductGrid
+            SizedBox(height: 20),
 
-                    Container(
-                      child: GridView(
-                        padding: EdgeInsets.all(20),
-                        children: <Widget>[
-                          buildCategory('seeds.png', 'Seeds'),
-                          buildCategory('fertilizer.jpg', 'Fertilizer'),
-                          buildCategory('herbicidesl.jpg', 'Herbicides'),
-                          buildCategory('pesticides.jpg', 'Pesticides'),
-                        ],
-                        primary: false,
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: mediaquery.size.width * 0.5,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: 10),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: 20),
-                      width: 180,
-                      decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(width: 8, color: Colors.amber)),
-                      ),
-                      child: Text(
-                        'Featured Products',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 280,
-                      margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (ctx, index) {
-                          return ProductItem(
-                              products[index].id,
-                              products[index].productName,
-                              products[index].price,
-                              products[index].description,
-                              products[index].image);
-                        },
-                        itemCount: products.length,
-                      ),
-                    )
-                  ],
-                ),
+            //ProductGrid
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(left: 20),
+              width: 120,
+              decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(
+                  width: 8,
+                  color: primaryColor,
+                )),
+              ),
+              child: Text(
+                'Categories',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
-          ],
-        ));
 
-    //Navigation .
-  }
-
-  Widget buildCategory(String image, String text) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: GridTile(
-        child: Image.asset(
-          'Assets/${image}',
-          fit: BoxFit.cover,
-        ),
-        footer: GridTileBar(
-          title: Text(
-            text,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            Container(
+              child: GridView(
+                padding: EdgeInsets.all(20),
+                children: <Widget>[
+                  buildCategory('seeds.png', 'Seeds'),
+                  buildCategory('fertilizer.jpg', 'Fertilizer'),
+                  buildCategory('herbicidesl.jpg', 'Herbicides'),
+                  buildCategory('pesticides.jpg', 'Pesticides'),
+                ],
+                primary: false,
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: mediaquery.size.width * 0.5,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 10),
+              ),
             ),
-            textAlign: TextAlign.center,
-          ),
-          backgroundColor: Colors.white54,
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(left: 20),
+              width: 200,
+              decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(width: 8, color: primaryColor)),
+              ),
+              child: Text(
+                'Featured Products',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: 280,
+              margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (ctx, index) {
+                  return ProductItem(
+                    products[index].id,
+                  );
+                },
+                itemCount: products.length,
+              ),
+            )
+          ],
         ),
       ),
     );

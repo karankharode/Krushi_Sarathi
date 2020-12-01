@@ -1,4 +1,4 @@
-import 'package:Krushi_Sarathi/BottomNavbar.dart';
+import 'package:Krushi_Sarathi/widget/BottomNavbar.dart';
 import 'package:flutter/material.dart';
 
 class ContactUsPage extends StatelessWidget {

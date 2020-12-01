@@ -1,24 +1,28 @@
-import 'package:Krushi_Sarathi/ProductPage.dart';
+import 'package:Krushi_Sarathi/provider/Cartitem.dart';
+import 'package:Krushi_Sarathi/Screens/ProductPage.dart';
+import 'package:Krushi_Sarathi/config.dart';
+import 'package:Krushi_Sarathi/provider/products_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductItem extends StatefulWidget {
   final String id;
-  final String title;
-  final String image;
-  final String description;
-  final String price;
 
-  ProductItem(this.id, this.title, this.price, this.description, this.image);
+  ProductItem(this.id);
 
   @override
   _ProductItemState createState() => _ProductItemState();
 }
 
 class _ProductItemState extends State<ProductItem> {
-  bool _isFav = false;
+  //bool _isFav = false;
   @override
   Widget build(BuildContext context) {
-    final mediaquery = MediaQuery.of(context);
+    //final mediaquery = MediaQuery.of(context);
+    final products = Provider.of<Products>(context, listen: false).items;
+    final cart = Provider.of<Cartitem>(context, listen: false);
+
+    final product = products.firstWhere((element) => element.id == widget.id);
 
     return InkWell(
       onTap: () {
@@ -43,26 +47,10 @@ class _ProductItemState extends State<ProductItem> {
                 width: double.infinity,
                 margin: EdgeInsets.all(10),
                 child: Image.asset(
-                  widget.image,
+                  product.image,
                   fit: BoxFit.cover,
                 ),
               ),
-              Positioned(
-                child: IconButton(
-                    icon: (_isFav)
-                        ? Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          )
-                        : Icon(Icons.favorite_border),
-                    onPressed: () {
-                      setState(() {
-                        _isFav = !_isFav;
-                      });
-                    }),
-                bottom: 0,
-                right: 0,
-              )
             ]),
             Divider(
               color: Colors.black54,
@@ -73,7 +61,7 @@ class _ProductItemState extends State<ProductItem> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '₹${widget.price}',
+                '₹${product.price}',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 textAlign: TextAlign.left,
               ),
@@ -81,7 +69,7 @@ class _ProductItemState extends State<ProductItem> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                widget.title,
+                product.productName,
                 style: TextStyle(fontSize: 15),
               ),
             ),
@@ -93,14 +81,25 @@ class _ProductItemState extends State<ProductItem> {
               child: FlatButton.icon(
                 icon: Icon(
                   Icons.shopping_cart,
-                  color: Colors.white,
+                  color: (product.avaliable) ? Colors.white : Colors.grey,
                 ),
-                onPressed: () {},
+                onPressed: (!product.avaliable)
+                    ? null
+                    : () {
+                        cart.addItem(
+                            id: product.id,
+                            productname: product.productName,
+                            avail: product.avaliable,
+                            image: product.image,
+                            price: 100,
+                            quantity: 2);
+                      },
                 label: Text(
                   'Add',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                      color: (product.avaliable) ? Colors.white : Colors.grey),
                 ),
-                color: Colors.orange,
+                color: (product.avaliable) ? drawerColor : Colors.grey,
               ),
             )
           ],
