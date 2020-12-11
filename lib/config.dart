@@ -6,4 +6,5 @@ Color shadowColor = Colors.lightGreen;
 Color textColor = Colors.white;
 Color drawerColor = Color.fromRGBO(0, 136, 122, 1);
 Color thirdColor = Colors.lightGreen;
-
+Color containerBackgroundColor = Color(0xff00744d);
+final Color quantityColor = Color(0xff689901).withOpacity(0.16);

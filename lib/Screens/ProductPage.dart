@@ -7,6 +7,8 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ProductPage extends StatefulWidget {
   static const routename = '/productpage';
@@ -24,6 +26,7 @@ class _ProductPageState extends State<ProductPage> {
   bool _init = true;
   var products;
   var product;
+
   @override
   void didChangeDependencies() {
     if (_init) {
@@ -40,215 +43,390 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cartitem>(context, listen: false);
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: drawerColor,
-          shadowColor: drawerColor,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              size: 30,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        shadowColor: Colors.transparent,
+        leading: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 10,
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          actions: [
-            IconButton(
-                icon: Icon(
-                  Icons.shopping_cart,
-                  size: 30,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, CartPage.routename);
-                }),
-            IconButton(
-                icon: Icon(Icons.share, size: 30, color: Colors.white),
-                onPressed: () {})
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Column(children: [
-            Container(
-              height: 350,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: drawerColor,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(80),
-                      bottomRight: Radius.circular(80))),
-              child: Stack(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        bottom: 50, right: 40, left: 40, top: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(80),
-                        image: DecorationImage(
-                            image: AssetImage(product.image),
-                            fit: BoxFit.fill)),
-                  ),
-                  Positioned(
-                    child: IconButton(
-                        icon: (product.isFavorite)
-                            ? Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 35,
-                              )
-                            : Icon(
-                                Icons.favorite_border,
-                                size: 35,
-                              ),
-                        onPressed: () {
-                          setState(() {
-                            product.toogleFavorite(product);
-                          });
-                        }),
-                    bottom: 70,
-                    right: 70,
-                  )
-                ],
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
               ),
             ),
-            Container(
-                padding: EdgeInsets.all(30),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          ],
+        ),
+        backgroundColor: Colors.transparent,
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, CartPage.routename);
+                },
+                child: Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              InkWell(
+                onTap: () {},
+                child: Icon(
+                  Icons.share,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            width: width * 0.06,
+          )
+        ],
+      ),
+      body: Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                "Assets/background.png",
+              ),
+              fit: BoxFit.fill),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+                child: Container(
+                  padding: EdgeInsets.only(top: height * 0.05),
+                  height: height * 0.5,
+                  width: width * 0.9,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(25.0),
+                        bottomRight: Radius.circular(25.0)),
+                    color: containerBackgroundColor,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(product.productName,
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
-                      SizedBox(
-                        height: 20,
+                      // product image section
+                      Container(
+                        height: height * 0.25,
+                        width: width * 0.9,
+                        margin: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
+                        child: Center(
+                          child: ClipOval(
+                            child: Image(
+                              image: AssetImage(product.image),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
                       ),
+                      //red favorite(heart) section
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: width * 0.6,
+                          ),
+                          IconButton(
+                              icon: (product.isFavorite)
+                                  ? Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                    )
+                                  : Icon(
+                                      Icons.favorite_border,
+                                    ),
+                              onPressed: () {
+                                setState(() {
+                                  product.toogleFavorite(product);
+                                });
+                              }),
+                        ],
+                      ),
+                      // product name section
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            product.productName,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'RedRose-Bold',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 1,
+                          ),
+                        ],
+                      ),
+                      //Star rating section
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: width * 0.5,
+                          ),
+                          RatingBar(
+                            ratingWidget: RatingWidget(
+                              full: Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: 5,
+                              ),
+                              half: null,
+                              empty: Icon(
+                                Icons.star_border,
+                                color: Colors.black87,
+                                size: 5,
+                              ),
+                            ),
+                            initialRating: 4.5,
+                            direction: Axis.horizontal,
+                            allowHalfRating: false,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                            onRatingUpdate: (rating) {
+                              rating = rating;
+                            },
+                            itemSize: 20,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              // price and quantity section
+              Container(
+                padding: EdgeInsets.only(top: height * 0.05),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // product price section
+                    Text(
+                      "₹ ${product.price}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Cinzel',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    // Product quantity section
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "Quantity : ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Roboto-Medium',
+                          ),
+                        ),
+                        Container(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                              color: quantityColor,
+                            ),
+                            padding: EdgeInsets.all(3.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [buildDropdown(context, dropdownValue)],
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              // buy and add to cart section
+              Container(
+                padding: EdgeInsets.only(top: height * 0.03),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    //Buy Now button
+                    InkWell(
+                      onTap: (product.avaliable) ? () {} : null,
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                          color: Colors.black,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              child: Icon(
+                                Icons.arrow_right_alt,
+                                color: Colors.black,
+                              ),
+                              padding: EdgeInsets.only(right: 2.0),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5.0)),
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              "Buy Now",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Quattrocento-Bold',
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 1,
+                    ),
+                    // Add to Cart button
+                    InkWell(
+                      onTap: (product.avaliable)
+                          ? () {
+                              cart.addItem(
+                                  id: product.id,
+                                  avail: product.avaliable,
+                                  image: product.image,
+                                  price: 100,
+                                  productname: product.productName,
+                                  quantity: 2);
+                            }
+                          : null,
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                          color: Colors.black,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              child: Icon(
+                                Icons.shopping_cart,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              "Add to cart",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Quattrocento-Bold',
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              // description section
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.07),
+                child: Container(
+                  padding: EdgeInsets.only(top: height * 0.03),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "₹${product.price}",
+                            'Description',
                             style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Quantity : ',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              buildDropdown(context, dropdownValue)
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 160,
-                            height: 50,
-                            child: RaisedButton.icon(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  side: BorderSide(color: primaryColor)),
-                              icon: Icon(
-                                Icons.account_balance_wallet,
-                                color: primaryColor,
-                                size: 25,
-                              ),
-                              onPressed: (product.avaliable) ? () {} : null,
-                              label: Text(
-                                'Buy Now',
-                                style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              ),
-                              color: Colors.grey[200],
+                              color: Colors.black,
+                              fontFamily: 'Ramabhadra-Regular',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
                             ),
+                            textAlign: TextAlign.left,
                           ),
                           SizedBox(
-                            height: 50,
-                            width: 160,
-                            child: RaisedButton.icon(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  side: BorderSide(color: Colors.white)),
-                              icon: Icon(
-                                Icons.shopping_cart,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                              onPressed: (product.avaliable)
-                                  ? () {
-                                      cart.addItem(
-                                          id: product.id,
-                                          avail: product.avaliable,
-                                          image: product.image,
-                                          price: 100,
-                                          productname: product.productName,
-                                          quantity: 2);
-                                    }
-                                  : null,
-                              label: Text(
-                                'Add to Cart',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              ),
-                              color: primaryColor,
-                            ),
+                            height: 1,
                           )
                         ],
                       ),
                       SizedBox(
-                        height: 15,
+                        height: 5.0,
                       ),
                       Text(
-                        'Description : ',
+                        product.description,
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                          color: Colors.black,
+                          fontFamily: 'Ramabhadra-Regular',
+                        ),
                         textAlign: TextAlign.left,
                       ),
-                      Text(product.description),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Divider(
-                        thickness: 1,
-                        color: Colors.black,
-                      )
-                    ]))
-          ]),
-        )
-
-        ///
-
-        );
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget buildbutton(String mark) {
     return Container(
-      width: 70,
-      child: RaisedButton(
-        onPressed: () {},
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-          side: BorderSide(color: Colors.green),
+      child: Text(
+        "${mark}",
+        style: TextStyle(
+          color: Colors.black,
+          fontFamily: 'Roboto-Thin',
+          fontWeight: FontWeight.bold,
         ),
-        child: Text("${mark} kg"),
       ),
     );
   }
 
   @override
+  // ignore: override_on_non_overriding_member
   Widget buildDropdown(BuildContext context, int dropdownValue) {
     final quantity = {1: "10kg", 2: "20kg", 3: "30kg", 4: "50kg"};
     return DropdownButton(
@@ -256,10 +434,10 @@ class _ProductPageState extends State<ProductPage> {
       icon: Icon(Icons.keyboard_arrow_down),
       iconSize: 24,
       elevation: 16,
-      style: TextStyle(color: primaryColor),
-      underline: Container(
-        height: 2,
-        color: primaryColor,
+      style: TextStyle(
+        color: Colors.black,
+        fontFamily: 'Roboto-Thin',
+        fontWeight: FontWeight.bold,
       ),
       onChanged: (newValue) {
         setState(() {
@@ -271,7 +449,11 @@ class _ProductPageState extends State<ProductPage> {
           value: value,
           child: Text(
             quantity[value],
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.black,
+              fontFamily: 'Roboto-Thin',
+            ),
           ),
         );
       }).toList(),
